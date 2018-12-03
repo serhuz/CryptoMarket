@@ -1,0 +1,6 @@
+project.manifest = manifest.xml
+
+base.sourcePath=source
+
+round-218x218.sourcePath=source;source-round-218x218
+round-240x240.sourcePath=source;source-round-240x240

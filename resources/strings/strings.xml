@@ -1,0 +1,9 @@
+<strings>
+	<string id="AppName">CryptoMarket</string>
+	<string id="Loading">Loading</string>
+	<string id="Ask">Ask:</string>
+	<string id="Bid">Bid:</string>
+	<string id="Volume">Vol:</string>
+	<string id="Price">Price:</string>
+	<string id="NoConnection">No connection</string>
+</strings>
