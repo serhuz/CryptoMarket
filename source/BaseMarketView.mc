@@ -66,7 +66,7 @@ class BaseMarketView extends Ui.View {
         } else {
             text = ticker["pair"];
         }
-        dc.drawText(dc.getWidth()/2, 20, Gfx.FONT_TINY, text, justification);
+        dc.drawText(dc.getWidth()/2, getPairOffset(), Gfx.FONT_TINY, text, justification);
 
         dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_BLACK);
         if (ticker == null) {
@@ -102,9 +102,9 @@ class BaseMarketView extends Ui.View {
 
         dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_BLACK);
         if (current == null || size == null) {
-            dc.drawText(dc.getWidth()/2, dc.getHeight() - 20, Gfx.FONT_XTINY, "-/-", justification);
+            dc.drawText(dc.getWidth()/2, dc.getHeight() - getPositionOffset(), Gfx.FONT_XTINY, "-/-", justification);
         } else {
-            dc.drawText(dc.getWidth()/2, dc.getHeight() - 20, Gfx.FONT_XTINY, current + "/" + size, justification);
+            dc.drawText(dc.getWidth()/2, dc.getHeight() - getPositionOffset(), Gfx.FONT_XTINY, current + "/" + size, justification);
         }
     }
 
@@ -118,6 +118,10 @@ class BaseMarketView extends Ui.View {
     function onHide() {
     }
 
+    function getPairOffset() {
+        return 20;
+    }
+
     function getLastOffset() {
         return 30;
     }
@@ -128,6 +132,10 @@ class BaseMarketView extends Ui.View {
 
     function getBidOffset() {
         return 40;
+    }
+
+    function getPositionOffset() {
+        return 20;
     }
 }
 

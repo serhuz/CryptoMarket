@@ -4,3 +4,5 @@ base.sourcePath=source
 
 round-218x218.sourcePath=source;source-round-218x218
 round-240x240.sourcePath=source;source-round-240x240
+semiround-215x180.sourcePath=source;source-semiround-215x180
+rectangle-205x148.sourcePath=source;source-rectangle-205x148
