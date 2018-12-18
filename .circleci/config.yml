@@ -1,0 +1,16 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/cryptomarket
+    docker:
+      - image: serhuz/ciq:3.0.6-1
+    steps:
+      - checkout
+      - run:
+          name: add key
+          command: echo $DEV_KEY | base64 -d >> ~/cryptomarket/key.der
+      - run:
+          name: assemble
+          command: monkeyc -o cryptomarket.prg -w -y key.der -d fenix3 -s 1.4.0 -r -f monkey.jungle
+      - store_artifacts:
+          path: ~/cryptomarket/cryptomarket.prg
