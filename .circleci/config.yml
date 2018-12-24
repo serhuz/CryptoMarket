@@ -9,8 +9,13 @@ jobs:
       - run:
           name: add key
           command: echo $DEV_KEY | base64 -d >> ~/cryptomarket/key.der
+      - run: 
+          name: assemble debug
+          command: java -Dfile.encoding=UTF-8 -Xmx3072m -jar /opt/ciq/bin/monkeybrains.jar -o cryptomarket.prg -w -y key.der -d fenix3 -s 1.4.0 -r -f monkey.jungle
       - run:
-          name: assemble
-          command: monkeyc -o cryptomarket.prg -w -y key.der -d fenix3 -s 1.4.0 -r -f monkey.jungle
+          name: assemble release
+          command: java -Dfile.encoding=UTF-8 -Xmx3072m -jar /opt/ciq/bin/monkeybrains.jar -o cryptomarket.iq -e -w -y key.der -r -f monkey.jungle
+      - store_artifacts:
+          path: ~/cryptomarket/cryptomarket.iq
       - store_artifacts:
           path: ~/cryptomarket/cryptomarket.prg
