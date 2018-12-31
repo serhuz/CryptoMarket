@@ -1,21 +1,58 @@
-version: 2
-jobs:
-  build:
-    working_directory: ~/cryptomarket
+version: 2.1
+
+executors:
+  ciq:
     docker:
-      - image: serhuz/ciq:3.0.7-1
+    - image: serhuz/ciq:3.0.7-1
+    working_directory: ~/cryptomarket
+    
+jobs:
+  prepare:
+    executor: ciq
     steps:
-      - checkout
-      - run:
-          name: add key
-          command: echo $DEV_KEY | base64 -d >> ~/cryptomarket/key.der
-      - run: 
-          name: assemble debug
-          command: java -Dfile.encoding=UTF-8 -Xmx3072m -jar /opt/ciq/bin/monkeybrains.jar -o cryptomarket.prg -w -y key.der -d fenix3 -s 1.4.0 -r -f monkey.jungle
-      - run:
-          name: assemble release
-          command: java -Dfile.encoding=UTF-8 -Xmx3072m -jar /opt/ciq/bin/monkeybrains.jar -o cryptomarket.iq -e -w -y key.der -r -f monkey.jungle
-      - store_artifacts:
-          path: ~/cryptomarket/cryptomarket.iq
-      - store_artifacts:
-          path: ~/cryptomarket/cryptomarket.prg
+    - run:
+        name: add key
+        command: echo $DEV_KEY | base64 -d >> ~/cryptomarket/key.der
+    - persist_to_workspace:
+        root: ~/cryptomarket
+        paths:
+        - key.der
+        
+  build_debug:
+    executor: ciq
+    steps:
+    - checkout
+    - attach_workspace:
+        at: ~/cryptomarket
+    - run:
+        name: assemble debug
+        command: java -Dfile.encoding=UTF-8 -Xmx3072m -jar /opt/ciq/bin/monkeybrains.jar -o cryptomarket.prg -w -y key.der -d fenix3 -s 1.4.0 -r -f monkey.jungle
+    - store_artifacts:
+        path: ~/cryptomarket/cryptomarket.prg
+  
+  build_release:
+    executor: ciq
+    steps:
+    - checkout
+    - attach_workspace:
+        at: ~/cryptomarket
+    - run:
+        name: assemble release
+        command: java -Dfile.encoding=UTF-8 -Xmx3072m -jar /opt/ciq/bin/monkeybrains.jar -o cryptomarket.iq -e -w -y key.der -r -f monkey.jungle
+    - store_artifacts:
+        path: ~/cryptomarket/cryptomarket.iq
+        
+workflows:
+  version: 2.1
+  build:
+    jobs:
+    - prepare
+    - build_debug:
+        requires:
+        - prepare
+    - build_release:
+        requires:
+        - build_debug
+        filters:
+          branches:
+            only: master
