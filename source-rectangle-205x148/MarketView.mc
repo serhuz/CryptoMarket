@@ -19,12 +19,12 @@ using Toybox.Graphics as Gfx;
 
 class MarketView extends BaseMarketView {
 
-    function initialize(ticker, current, size) {
-        BaseMarketView.initialize(ticker, current, size);
+    function initialize(ticker, current, size, shouldDrawIndicators) {
+        BaseMarketView.initialize(ticker, current, size, shouldDrawIndicators);
     }
 
     function getPairOffset() {
-        return 10;
+        return getIndicatorOffset() * 2 + getIndicatorSize() + 10;
     }
 
     function getLastOffset() {
@@ -40,6 +40,6 @@ class MarketView extends BaseMarketView {
     }
 
     function getPositionOffset() {
-        return 10;
+        return getIndicatorOffset() * 2 + getIndicatorSize() + 10;
     }
 }

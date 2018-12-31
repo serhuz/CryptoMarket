@@ -1,6 +1,5 @@
 <strings>
 	<string id="AppName">CryptoMarket</string>
-	<string id="Loading">Loading</string>
 	<string id="Ask">Ask:</string>
 	<string id="Bid">Bid:</string>
 	<string id="Volume">Vol:</string>

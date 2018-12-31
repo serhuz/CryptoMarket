@@ -22,17 +22,19 @@ class BaseMarketView extends Ui.View {
     hidden var ticker;
     hidden var current;
     hidden var size;
+    hidden var shouldDrawIndicators = false;
 
     hidden var priceLabel;
     hidden var volumeLabel;
     hidden var askLabel;
     hidden var bidLabel;
 
-    function initialize(ticker, current, size) {
+    function initialize(ticker, current, size, shouldDrawIndicators) {
         View.initialize();
         self.ticker = ticker;
         self.current = current;
         self.size = size;
+        self.shouldDrawIndicators = shouldDrawIndicators;
     }
 
     // Load your resources here
@@ -106,6 +108,23 @@ class BaseMarketView extends Ui.View {
         } else {
             dc.drawText(dc.getWidth()/2, dc.getHeight() - getPositionOffset(), Gfx.FONT_XTINY, current + "/" + size, justification);
         }
+
+        if (shouldDrawIndicators) {
+            dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_BLACK);
+           var bottomY = dc.getHeight() - getIndicatorOffset() - getIndicatorSize();
+           dc.fillPolygon([
+                [dc.getWidth()/2, dc.getHeight() - getIndicatorOffset()],
+                [dc.getWidth()/2 - getIndicatorSize(), bottomY],
+                [dc.getWidth()/2 + 5, bottomY]
+           ]);
+
+           var topY = getIndicatorOffset() + getIndicatorSize();
+           dc.fillPolygon([
+                [dc.getWidth()/2, getIndicatorOffset()],
+                [dc.getWidth()/2 - getIndicatorSize(), topY],
+                [dc.getWidth()/2 + 5, topY]
+           ]);
+        }
     }
 
     function formatText(args) {
@@ -119,7 +138,7 @@ class BaseMarketView extends Ui.View {
     }
 
     function getPairOffset() {
-        return 20;
+        return getIndicatorOffset() * 2 + getIndicatorSize() + 10;
     }
 
     function getLastOffset() {
@@ -135,7 +154,15 @@ class BaseMarketView extends Ui.View {
     }
 
     function getPositionOffset() {
-        return 20;
+        return getIndicatorOffset() * 2 + getIndicatorSize() + 10;
+    }
+
+    function getIndicatorOffset() {
+        return 8;
+    }
+
+    function getIndicatorSize() {
+        return 5;
     }
 }
 

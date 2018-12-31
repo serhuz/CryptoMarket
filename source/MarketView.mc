@@ -20,8 +20,7 @@ using Toybox.Graphics as Gfx;
 (:all)
 class MarketView extends BaseMarketView {
 
-    function initialize(ticker, current, size) {
-        BaseMarketView.initialize(ticker, current, size);
+    function initialize(ticker, current, size, shouldDrawIndicators) {
+        BaseMarketView.initialize(ticker, current, size, shouldDrawIndicators);
     }
-
 }

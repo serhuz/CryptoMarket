@@ -20,6 +20,7 @@ class InputDelegate extends Ui.BehaviorDelegate {
 
     hidden var tickers;
     hidden var pos = 0;
+    hidden var isInScrollMode = false;
 
     function initialize(tickers) {
         BehaviorDelegate.initialize();
@@ -27,13 +28,52 @@ class InputDelegate extends Ui.BehaviorDelegate {
     }
 
     function onSelect() {
-        pos++;
-        var adjustedPos = pos % tickers.size();
-        Ui.switchToView(new MarketView(tickers[adjustedPos], adjustedPos + 1, tickers.size()), self, Ui.SLIDE_UP);
+        if(!isInScrollMode) {
+            isInScrollMode = true;
+            Ui.pushView(new MarketView(tickers[pos], pos + 1, tickers.size(), true), self, Ui.SLIDE_IMMEDIATE);
+        } else {
+            popView();
+        }
         return true;
     }
 
+    function onNextPage() {
+        if (isInScrollMode) {
+            pos = (pos + 1) % tickers.size();
+            Ui.switchToView(new MarketView(tickers[pos], pos + 1, tickers.size(), true), self, Ui.SLIDE_UP);
+        }
+        return isInScrollMode;
+    }
+
+    function onPreviousPage() {
+        if (isInScrollMode) {
+            pos = (tickers.size() + (pos - 1)) % tickers.size();
+            Ui.switchToView(new MarketView(tickers[pos], pos + 1, tickers.size(), true), self, Ui.SLIDE_DOWN);
+        }
+        return isInScrollMode;
+    }
+
     function onBack() {
+        if (isInScrollMode) {
+            popView();
+            return true;
+        }
         return false;
+    }
+
+    private function popView() {
+        Ui.popView(Ui.SLIDE_IMMEDIATE);
+        isInScrollMode = false;
+        Ui.switchToView(new MarketView(tickers[pos], pos + 1, tickers.size(), false), self, Ui.SLIDE_IMMEDIATE);
+    }
+
+    (:debug)
+    function getIsInScrollMode() {
+        return isInScrollMode;
+    }
+
+    (:debug)
+    function setInScrollMode(isInscrollMode) {
+        self.isInScrollMode = isInScrollMode;
     }
 }
