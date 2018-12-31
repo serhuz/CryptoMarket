@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/cryptomarket
     docker:
-      - image: serhuz/ciq:3.0.6-1
+      - image: serhuz/ciq:3.0.7-1
     steps:
       - checkout
       - run:
