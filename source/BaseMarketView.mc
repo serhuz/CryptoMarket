@@ -16,6 +16,7 @@
 using Toybox.WatchUi as Ui;
 using Toybox.System as Sys;
 using Toybox.Graphics as Gfx;
+using Toybox.Application as App;
 
 class BaseMarketView extends Ui.View {
 
@@ -28,6 +29,8 @@ class BaseMarketView extends Ui.View {
     hidden var volumeLabel;
     hidden var askLabel;
     hidden var bidLabel;
+
+    hidden var priceFormat;
 
     function initialize(ticker, current, size, shouldDrawIndicators) {
         View.initialize();
@@ -50,6 +53,12 @@ class BaseMarketView extends Ui.View {
         volumeLabel = Ui.loadResource(Rez.Strings.Volume);
         askLabel = Ui.loadResource(Rez.Strings.Ask);
         bidLabel = Ui.loadResource(Rez.Strings.Bid);
+        var currency = App.getApp().getProperty("Market");
+        if (currency < 2) {
+            priceFormat = "%.02f";
+        } else {
+            priceFormat = "%.08f";
+        }
     }
 
     // Update the view
@@ -74,7 +83,7 @@ class BaseMarketView extends Ui.View {
         if (ticker == null) {
             text = formatText([priceLabel, "--"]);
         } else {
-            text = formatText([priceLabel, ticker["last"].toFloat().format("%.02f")]);
+            text = formatText([priceLabel, ticker["last"].toFloat().format(priceFormat)]);
         }
         dc.drawText(dc.getWidth()/2, dc.getHeight()/2 - getLastOffset(), Gfx.FONT_MEDIUM, text, justification);
 
@@ -90,7 +99,7 @@ class BaseMarketView extends Ui.View {
         if (ticker == null) {
             text = formatText([askLabel, "--"]);
         } else {
-            text = formatText([askLabel, ticker["ask"].format("%.02f")]);
+            text = formatText([askLabel, ticker["ask"].format(priceFormat)]);
         }
         dc.drawText(dc.getWidth()/2, dc.getHeight()/2 + getAskOffset(), Gfx.FONT_TINY, text, justification);
 
@@ -98,7 +107,7 @@ class BaseMarketView extends Ui.View {
         if (ticker == null) {
             text = formatText([bidLabel, "--"]);
         } else {
-            text = formatText([bidLabel, ticker["bid"].format("%.02f")]);
+            text = formatText([bidLabel, ticker["bid"].format(priceFormat)]);
         }
         dc.drawText(dc.getWidth()/2, dc.getHeight()/2 + getBidOffset(), Gfx.FONT_TINY, text , justification);
 

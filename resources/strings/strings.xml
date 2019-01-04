@@ -5,4 +5,9 @@
 	<string id="Volume">Vol:</string>
 	<string id="Price">Price:</string>
 	<string id="NoConnection">No connection</string>
+	
+	<string id="Market">Market</string>
+	<string id="ItemUSD">USD</string>
+	<string id="ItemEUR">EUR</string>
+	<string id="ItemBTC">BTC</string>
 </strings>

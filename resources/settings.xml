@@ -1,0 +1,9 @@
+<settings>
+	<setting propertyKey="@Properties.Market" title="@Strings.Market">
+		<settingConfig type="list" required="true">
+			<listEntry value="0">@Strings.ItemUSD</listEntry>
+			<listEntry value="1">@Strings.ItemEUR</listEntry>
+			<listEntry value="2">@Strings.ItemBTC</listEntry>
+		</settingConfig>
+	</setting>
+</settings>

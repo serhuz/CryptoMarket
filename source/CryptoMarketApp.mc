@@ -26,7 +26,7 @@ class CryptoMarketApp extends Application.AppBase {
 
     // onStart() is called on application start up
     function onStart(state) {
-        loadTickers();
+        loadTickers(Lang.format(URL, [CURRENCIES[getProperty("Market")]]));
     }
 
     // onStop() is called when your application is exiting
@@ -39,13 +39,13 @@ class CryptoMarketApp extends Application.AppBase {
         return [ new MarketView(null, null, null, false) ];
     }
 
-    function loadTickers() {
+    function loadTickers(url) {
         var options = {
             :method => Comms.HTTP_REQUEST_METHOD_GET,
             :responseType => Comms.HTTP_RESPONSE_CONTENT_TYPE_JSON
         };
 
-        Comms.makeJsonRequest(URL, null, options, method(:onReceive));
+        Comms.makeJsonRequest(url, null, options, method(:onReceive));
     }
 
     function onReceive(responseCode, data) {
@@ -58,4 +58,5 @@ class CryptoMarketApp extends Application.AppBase {
     }
 }
 
-const URL = "https://cex.io/api/tickers/USD";
+const CURRENCIES = ["USD", "EUR", "BTC"];
+const URL = "https://cex.io/api/tickers/$1$";
