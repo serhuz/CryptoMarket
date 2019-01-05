@@ -21,16 +21,18 @@ class InputDelegate extends Ui.BehaviorDelegate {
     hidden var tickers;
     hidden var pos = 0;
     hidden var isInScrollMode = false;
+    hidden var priceFormat;
 
-    function initialize(tickers) {
+    function initialize(tickers, priceFormat) {
         BehaviorDelegate.initialize();
         self.tickers = tickers;
+        self.priceFormat = priceFormat;
     }
 
     function onSelect() {
         if(!isInScrollMode) {
             isInScrollMode = true;
-            Ui.pushView(new MarketView(tickers[pos], pos + 1, tickers.size(), true), self, Ui.SLIDE_IMMEDIATE);
+            Ui.pushView(new MarketView(tickers[pos], pos + 1, tickers.size(), true, priceFormat), self, Ui.SLIDE_IMMEDIATE);
         } else {
             popView();
         }
@@ -40,7 +42,7 @@ class InputDelegate extends Ui.BehaviorDelegate {
     function onNextPage() {
         if (isInScrollMode) {
             pos = (pos + 1) % tickers.size();
-            Ui.switchToView(new MarketView(tickers[pos], pos + 1, tickers.size(), true), self, Ui.SLIDE_UP);
+            Ui.switchToView(new MarketView(tickers[pos], pos + 1, tickers.size(), true, priceFormat), self, Ui.SLIDE_UP);
         }
         return isInScrollMode;
     }
@@ -48,7 +50,7 @@ class InputDelegate extends Ui.BehaviorDelegate {
     function onPreviousPage() {
         if (isInScrollMode) {
             pos = (tickers.size() + (pos - 1)) % tickers.size();
-            Ui.switchToView(new MarketView(tickers[pos], pos + 1, tickers.size(), true), self, Ui.SLIDE_DOWN);
+            Ui.switchToView(new MarketView(tickers[pos], pos + 1, tickers.size(), true, priceFormat), self, Ui.SLIDE_DOWN);
         }
         return isInScrollMode;
     }
@@ -64,7 +66,7 @@ class InputDelegate extends Ui.BehaviorDelegate {
     private function popView() {
         Ui.popView(Ui.SLIDE_IMMEDIATE);
         isInScrollMode = false;
-        Ui.switchToView(new MarketView(tickers[pos], pos + 1, tickers.size(), false), self, Ui.SLIDE_IMMEDIATE);
+        Ui.switchToView(new MarketView(tickers[pos], pos + 1, tickers.size(), false, priceFormat), self, Ui.SLIDE_IMMEDIATE);
     }
 
     (:debug)

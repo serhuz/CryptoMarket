@@ -24,20 +24,20 @@ class BaseMarketView extends Ui.View {
     hidden var current;
     hidden var size;
     hidden var shouldDrawIndicators = false;
+    hidden var priceFormat;
 
     hidden var priceLabel;
     hidden var volumeLabel;
     hidden var askLabel;
     hidden var bidLabel;
 
-    hidden var priceFormat;
-
-    function initialize(ticker, current, size, shouldDrawIndicators) {
+    function initialize(ticker, current, size, shouldDrawIndicators, priceFormat) {
         View.initialize();
         self.ticker = ticker;
         self.current = current;
         self.size = size;
         self.shouldDrawIndicators = shouldDrawIndicators;
+        self.priceFormat = priceFormat;
     }
 
     // Load your resources here
@@ -53,12 +53,6 @@ class BaseMarketView extends Ui.View {
         volumeLabel = Ui.loadResource(Rez.Strings.Volume);
         askLabel = Ui.loadResource(Rez.Strings.Ask);
         bidLabel = Ui.loadResource(Rez.Strings.Bid);
-        var currency = App.getApp().getProperty("Market");
-        if (currency < 2) {
-            priceFormat = "%.02f";
-        } else {
-            priceFormat = "%.08f";
-        }
     }
 
     // Update the view

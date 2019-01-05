@@ -20,13 +20,16 @@ using Toybox.System as Sys;
 
 class CryptoMarketApp extends Application.AppBase {
 
+    hidden var currencyId;
+
     function initialize() {
         AppBase.initialize();
     }
 
     // onStart() is called on application start up
     function onStart(state) {
-        loadTickers(Lang.format(URL, [CURRENCIES[getProperty("Market")]]));
+        currencyId = getProperty("Market");
+        loadTickers(Lang.format(URL, [CURRENCIES[currencyId]]));
     }
 
     // onStop() is called when your application is exiting
@@ -36,7 +39,7 @@ class CryptoMarketApp extends Application.AppBase {
 
     // Return the initial view of your application here
     function getInitialView() {
-        return [ new MarketView(null, null, null, false) ];
+        return [ new MarketView(null, null, null, false, null) ];
     }
 
     function loadTickers(url) {
@@ -51,7 +54,12 @@ class CryptoMarketApp extends Application.AppBase {
     function onReceive(responseCode, data) {
         if (data != null) {
             var tickers = data["data"];
-            Ui.switchToView(new MarketView(tickers[0], 1, tickers.size(), false), new InputDelegate(tickers), Ui.SLIDE_IMMEDIATE);
+            var priceFormat = (currencyId < 2) ? "%.02f" : "%.08f";
+            Ui.switchToView(
+                new MarketView(tickers[0], 1, tickers.size(), false, priceFormat),
+                new InputDelegate(tickers, priceFormat),
+                Ui.SLIDE_IMMEDIATE
+            );
         } else {
             Ui.switchToView(new EmptyView(), null, Ui.SLIDE_IMMEDIATE);
         }
