@@ -22,11 +22,13 @@ class InputDelegate extends Ui.BehaviorDelegate {
     hidden var pos = 0;
     hidden var isInScrollMode = false;
     hidden var priceFormat;
+    hidden var initialView;
 
-    function initialize(tickers, priceFormat) {
+    function initialize(tickers, priceFormat, initialView) {
         BehaviorDelegate.initialize();
         self.tickers = tickers;
         self.priceFormat = priceFormat;
+        self.initialView = initialView.weak();
     }
 
     function onSelect() {
@@ -64,9 +66,11 @@ class InputDelegate extends Ui.BehaviorDelegate {
     }
 
     private function popView() {
+        if (initialView.stillAlive()) {
+            initialView.get().setTicker(tickers[pos], pos + 1);
+        }
         Ui.popView(Ui.SLIDE_IMMEDIATE);
         isInScrollMode = false;
-        Ui.switchToView(new MarketView(tickers[pos], pos + 1, tickers.size(), false, priceFormat), self, Ui.SLIDE_IMMEDIATE);
     }
 
     (:debug)

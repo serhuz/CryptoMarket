@@ -40,6 +40,12 @@ class BaseMarketView extends Ui.View {
         self.priceFormat = priceFormat;
     }
 
+    function setTicker(ticker, current) {
+        self.ticker = ticker;
+        self.current = current;
+        Ui.requestUpdate();
+    }
+
     // Load your resources here
     function onLayout(dc) {
     }

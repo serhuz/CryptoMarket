@@ -55,9 +55,10 @@ class CryptoMarketApp extends Application.AppBase {
         if (data != null) {
             var tickers = data["data"];
             var priceFormat = (currencyId < 2) ? "%.02f" : "%.08f";
+            var initialView = new MarketView(tickers[0], 1, tickers.size(), false, priceFormat);
             Ui.switchToView(
-                new MarketView(tickers[0], 1, tickers.size(), false, priceFormat),
-                new InputDelegate(tickers, priceFormat),
+                initialView,
+                new InputDelegate(tickers, priceFormat, initialView),
                 Ui.SLIDE_IMMEDIATE
             );
         } else {
