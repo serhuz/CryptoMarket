@@ -42,4 +42,12 @@ class MarketView extends BaseMarketView {
     function getPositionOffset() {
         return getIndicatorOffset() * 2 + getIndicatorSize() + 10;
     }
+
+    function getPriceChangeOffset() {
+        return getPairOffset() + 22;
+    }
+
+    function shouldDrawPosition() {
+        return false;
+    }
 }

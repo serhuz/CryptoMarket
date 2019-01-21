@@ -28,10 +28,14 @@ class MarketView extends BaseMarketView {
     }
 
     function getAskOffset() {
-        return 25;
+        return 30;
     }
 
     function getBidOffset() {
-        return 50;
+        return 55;
+    }
+
+    function getPriceChangeOffset() {
+        return getPairOffset() + 30;
     }
 }

@@ -79,6 +79,26 @@ class BaseMarketView extends Ui.View {
         }
         dc.drawText(dc.getWidth()/2, getPairOffset(), Gfx.FONT_TINY, text, justification);
 
+        if (ticker != null) {
+            var priceChange = ticker["priceChange"];
+            if (priceChange.find("-") == null && priceChange.toFloat() > 0) {
+                priceChange = Lang.format("+$1$", [priceChange]);
+                dc.setColor(Gfx.COLOR_GREEN, Gfx.COLOR_BLACK);
+            } else if (priceChange.toFloat() == 0) {
+                dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_BLACK);
+            } else {
+                dc.setColor(Gfx.COLOR_RED, Gfx.COLOR_BLACK);
+            }
+            var changePercentage = ticker["priceChangePercentage"];
+            if (changePercentage.find("-") == null && changePercentage.toFloat() > 0) {
+                changePercentage = Lang.format("+$1$%", [changePercentage]);
+            } else {
+                changePercentage = Lang.format("$1$%", [changePercentage]);
+            }
+            text = Lang.format("$1$ ($2$)", [priceChange, changePercentage]);
+            dc.drawText(dc.getWidth()/2, getPriceChangeOffset(), Gfx.FONT_TINY, text, justification);
+        }
+
         dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_BLACK);
         if (ticker == null) {
             text = formatText([priceLabel, "--"]);
@@ -111,11 +131,13 @@ class BaseMarketView extends Ui.View {
         }
         dc.drawText(dc.getWidth()/2, dc.getHeight()/2 + getBidOffset(), Gfx.FONT_TINY, text , justification);
 
-        dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_BLACK);
-        if (current == null || size == null) {
-            dc.drawText(dc.getWidth()/2, dc.getHeight() - getPositionOffset(), Gfx.FONT_XTINY, "-/-", justification);
-        } else {
-            dc.drawText(dc.getWidth()/2, dc.getHeight() - getPositionOffset(), Gfx.FONT_XTINY, current + "/" + size, justification);
+        if (shouldDrawPosition()) {
+            dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_BLACK);
+            if (current == null || size == null) {
+                dc.drawText(dc.getWidth()/2, dc.getHeight() - getPositionOffset(), Gfx.FONT_XTINY, "-/-", justification);
+            } else {
+                dc.drawText(dc.getWidth()/2, dc.getHeight() - getPositionOffset(), Gfx.FONT_XTINY, current + "/" + size, justification);
+            }
         }
 
         if (shouldDrawIndicators) {
@@ -151,15 +173,15 @@ class BaseMarketView extends Ui.View {
     }
 
     function getLastOffset() {
-        return 30;
+        return 25;
     }
 
     function getAskOffset() {
-        return 20;
+        return 25;
     }
 
     function getBidOffset() {
-        return 40;
+        return 45;
     }
 
     function getPositionOffset() {
@@ -172,6 +194,14 @@ class BaseMarketView extends Ui.View {
 
     function getIndicatorSize() {
         return 5;
+    }
+
+    function getPriceChangeOffset() {
+        return getPairOffset() + 30;
+    }
+
+    function shouldDrawPosition() {
+        return true;
     }
 }
 
