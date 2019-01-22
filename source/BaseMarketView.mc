@@ -79,7 +79,7 @@ class BaseMarketView extends Ui.View {
         }
         dc.drawText(dc.getWidth()/2, getPairOffset(), Gfx.FONT_TINY, text, justification);
 
-        if (ticker != null) {
+        if (ticker != null && shouldDrawChange()) {
             var priceChange = ticker["priceChange"];
             if (priceChange.find("-") == null && priceChange.toFloat() > 0) {
                 priceChange = Lang.format("+$1$", [priceChange]);
@@ -201,6 +201,10 @@ class BaseMarketView extends Ui.View {
     }
 
     function shouldDrawPosition() {
+        return true;
+    }
+
+    function shouldDrawChange() {
         return true;
     }
 }

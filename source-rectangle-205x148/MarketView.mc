@@ -50,4 +50,8 @@ class MarketView extends BaseMarketView {
     function shouldDrawPosition() {
         return false;
     }
+
+    function shouldDrawChange() {
+        return false;
+    }
 }
