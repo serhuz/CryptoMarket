@@ -24,20 +24,18 @@ class BaseMarketView extends Ui.View {
     hidden var current;
     hidden var size;
     hidden var shouldDrawIndicators = false;
-    hidden var priceFormat;
 
     hidden var priceLabel;
     hidden var volumeLabel;
     hidden var askLabel;
     hidden var bidLabel;
 
-    function initialize(ticker, current, size, shouldDrawIndicators, priceFormat) {
+    function initialize(ticker, current, size, shouldDrawIndicators) {
         View.initialize();
         self.ticker = ticker;
         self.current = current;
         self.size = size;
         self.shouldDrawIndicators = shouldDrawIndicators;
-        self.priceFormat = priceFormat;
     }
 
     function setTicker(ticker, current) {
@@ -107,7 +105,7 @@ class BaseMarketView extends Ui.View {
         if (ticker == null) {
             text = formatText([priceLabel, "--"]);
         } else {
-            text = formatText([priceLabel, ticker["last"].toFloat().format(priceFormat)]);
+            text = formatText([priceLabel, ticker["last"]]);
         }
         dc.drawText(dc.getWidth()/2, dc.getHeight()/2 - getLastOffset(), Gfx.FONT_MEDIUM, text, justification);
 
@@ -123,7 +121,7 @@ class BaseMarketView extends Ui.View {
         if (ticker == null) {
             text = formatText([askLabel, "--"]);
         } else {
-            text = formatText([askLabel, ticker["ask"].format(priceFormat)]);
+            text = formatText([askLabel, ticker["ask"].format(Format.formats[ticker["pair"]])]);
         }
         dc.drawText(dc.getWidth()/2, dc.getHeight()/2 + getAskOffset(), Gfx.FONT_TINY, text, justification);
 
@@ -131,7 +129,7 @@ class BaseMarketView extends Ui.View {
         if (ticker == null) {
             text = formatText([bidLabel, "--"]);
         } else {
-            text = formatText([bidLabel, ticker["bid"].format(priceFormat)]);
+            text = formatText([bidLabel, ticker["bid"].format(Format.formats[ticker["pair"]])]);
         }
         dc.drawText(dc.getWidth()/2, dc.getHeight()/2 + getBidOffset(), Gfx.FONT_TINY, text , justification);
 

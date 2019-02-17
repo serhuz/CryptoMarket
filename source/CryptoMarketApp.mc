@@ -39,7 +39,7 @@ class CryptoMarketApp extends Application.AppBase {
 
     // Return the initial view of your application here
     function getInitialView() {
-        return [ new MarketView(null, null, null, false, null) ];
+        return [ new MarketView(null, null, null, false) ];
     }
 
     function loadTickers(url) {
@@ -54,11 +54,10 @@ class CryptoMarketApp extends Application.AppBase {
     function onReceive(responseCode, data) {
         if (data != null) {
             var tickers = data["data"];
-            var priceFormat = (currencyId < 2) ? "%.02f" : "%.08f";
-            var initialView = new MarketView(tickers[0], 1, tickers.size(), false, priceFormat);
+            var initialView = new MarketView(tickers[0], 1, tickers.size(), false);
             Ui.switchToView(
                 initialView,
-                new InputDelegate(tickers, priceFormat, initialView),
+                new InputDelegate(tickers, initialView),
                 Ui.SLIDE_IMMEDIATE
             );
         } else {
