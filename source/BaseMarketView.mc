@@ -97,6 +97,10 @@ class BaseMarketView extends Ui.View {
             }
             text = Lang.format("$1$ ($2$)", [priceChange, changePercentage]);
             dc.drawText(dc.getWidth()/2, getPriceChangeOffset(), Gfx.FONT_TINY, text, justification);
+        } else if (shouldDrawChange()) {
+            dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_BLACK);
+            text = "-:-";
+            dc.drawText(dc.getWidth()/2, getPriceChangeOffset(), Gfx.FONT_TINY, text, justification);
         }
 
         dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_BLACK);
