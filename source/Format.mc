@@ -46,4 +46,11 @@ module Format {
         "ZEC:BTC" => "%.06f",
         "QASH:BTC" => "%.06f"
     };
+
+    function formatPrice(amount, pair) {
+        if (amount instanceof Toybox.Lang.String) {
+            amount = amount.toFloat();
+        }
+        return amount.format(formats[pair]);
+    }
 }

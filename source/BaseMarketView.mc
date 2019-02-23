@@ -17,6 +17,7 @@ using Toybox.WatchUi as Ui;
 using Toybox.System as Sys;
 using Toybox.Graphics as Gfx;
 using Toybox.Application as App;
+using Format as Fmt;
 
 class BaseMarketView extends Ui.View {
 
@@ -105,7 +106,7 @@ class BaseMarketView extends Ui.View {
         if (ticker == null) {
             text = formatText([priceLabel, "--"]);
         } else {
-            text = formatText([priceLabel, ticker["last"]]);
+            text = formatText([priceLabel, Fmt.formatPrice(ticker["last"], ticker["pair"])]);
         }
         dc.drawText(dc.getWidth()/2, dc.getHeight()/2 - getLastOffset(), Gfx.FONT_MEDIUM, text, justification);
 
@@ -121,7 +122,7 @@ class BaseMarketView extends Ui.View {
         if (ticker == null) {
             text = formatText([askLabel, "--"]);
         } else {
-            text = formatText([askLabel, ticker["ask"].format(Format.formats[ticker["pair"]])]);
+            text = formatText([askLabel, Fmt.formatPrice(ticker["ask"], ticker["pair"])]);
         }
         dc.drawText(dc.getWidth()/2, dc.getHeight()/2 + getAskOffset(), Gfx.FONT_TINY, text, justification);
 
@@ -129,7 +130,7 @@ class BaseMarketView extends Ui.View {
         if (ticker == null) {
             text = formatText([bidLabel, "--"]);
         } else {
-            text = formatText([bidLabel, ticker["bid"].format(Format.formats[ticker["pair"]])]);
+            text = formatText([bidLabel, Fmt.formatPrice(ticker["bid"], ticker["pair"])]);
         }
         dc.drawText(dc.getWidth()/2, dc.getHeight()/2 + getBidOffset(), Gfx.FONT_TINY, text , justification);
 
