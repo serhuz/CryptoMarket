@@ -6,4 +6,10 @@
 			<listEntry value="2">@Strings.ItemBTC</listEntry>
 		</settingConfig>
 	</setting>
+	<setting propertyKey="@Properties.AskBidHighLow" title="@Strings.AskBidHighLow">
+	   <settingConfig type="list" required="true">
+	       <listEntry value="0">@Strings.AskBid</listEntry>
+	       <listEntry value="1">@Strings.HighLow</listEntry>
+	   </settingConfig>
+	</setting>
 </settings>

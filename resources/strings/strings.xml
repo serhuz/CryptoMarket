@@ -10,4 +10,10 @@
 	<string id="ItemUSD">USD</string>
 	<string id="ItemEUR">EUR</string>
 	<string id="ItemBTC">BTC</string>
+	
+	<string id="AskBidHighLow">Additional data</string>
+	<string id="AskBid">Ask/Bid</string>
+	<string id="HighLow">High/Low</string>
+	<string id="Low">Low</string>
+	<string id="High">High</string>
 </strings>

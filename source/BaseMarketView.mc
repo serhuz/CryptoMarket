@@ -56,8 +56,14 @@ class BaseMarketView extends Ui.View {
         View.onShow();
         priceLabel = Ui.loadResource(Rez.Strings.Price);
         volumeLabel = Ui.loadResource(Rez.Strings.Volume);
-        askLabel = Ui.loadResource(Rez.Strings.Ask);
-        bidLabel = Ui.loadResource(Rez.Strings.Bid);
+
+        if (Application.getApp().getProperty("AskBidHighLow") == 0) {
+            askLabel = Ui.loadResource(Rez.Strings.Ask);
+            bidLabel = Ui.loadResource(Rez.Strings.Bid);
+        } else {
+            askLabel = Ui.loadResource(Rez.Strings.Low);
+            bidLabel = Ui.loadResource(Rez.Strings.High);
+        }
     }
 
     // Update the view
@@ -122,7 +128,13 @@ class BaseMarketView extends Ui.View {
         if (ticker == null) {
             text = formatText([askLabel, "--"]);
         } else {
-            text = formatText([askLabel, Fmt.formatPrice(ticker["ask"], ticker["pair"])]);
+            var data;
+            if (Application.getApp().getProperty("AskBidHighLow") == 0) {
+                data = ticker["ask"];
+            } else {
+                data = ticker["low"];
+            }
+            text = formatText([askLabel, Fmt.formatPrice(data, ticker["pair"])]);
         }
         dc.drawText(dc.getWidth()/2, dc.getHeight()/2 + getAskOffset(), Gfx.FONT_TINY, text, justification);
 
@@ -130,7 +142,13 @@ class BaseMarketView extends Ui.View {
         if (ticker == null) {
             text = formatText([bidLabel, "--"]);
         } else {
-            text = formatText([bidLabel, Fmt.formatPrice(ticker["bid"], ticker["pair"])]);
+             var data;
+            if (Application.getApp().getProperty("AskBidHighLow") == 0) {
+                data = ticker["bid"];
+            } else {
+                data = ticker["high"];
+            }
+            text = formatText([bidLabel, Fmt.formatPrice(data, ticker["pair"])]);
         }
         dc.drawText(dc.getWidth()/2, dc.getHeight()/2 + getBidOffset(), Gfx.FONT_TINY, text , justification);
 

@@ -1,3 +1,4 @@
 <properties>
 	<property id="Market" type="number">0</property>
+	<property id="AskBidHighLow" type="number">0</property>
 </properties>
