@@ -54,10 +54,6 @@ module Format {
 
         var precision = formats[pair];
 
-        if (precision == null) {
-            return amount.format("%.02f");
-        } else {
-            return amount.format(precision);
-        }
+        return (precision == null) ? amount.format("%.02f") : amount.format(precision);
     }
 }

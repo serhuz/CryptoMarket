@@ -22,20 +22,4 @@ class MarketView extends BaseMarketView {
     function initialize(ticker, current, size, shouldDrawIndicators) {
         BaseMarketView.initialize(ticker, current, size, shouldDrawIndicators);
     }
-
-    function getLastOffset() {
-        return 22;
-    }
-
-    function getAskOffset() {
-        return 20;
-    }
-
-    function getBidOffset() {
-        return 38;
-    }
-
-    function getPriceChangeOffset() {
-        return getPairOffset() + 18;
-    }
 }

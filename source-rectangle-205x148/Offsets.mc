@@ -1,4 +1,4 @@
-/*   Copyright 2018 Sergei Munovarov
+/*   Copyright 2019 Sergei Munovarov
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -13,13 +13,17 @@
  *   limitations under the License.
  */
 
-using Toybox.WatchUi as Ui;
-using Toybox.System as Sys;
-using Toybox.Graphics as Gfx;
+module Offsets {
 
-class MarketView extends BaseMarketView {
+    const lastOffset = 22;
+    const askOffset = 18;
+    const bidOffset = 36;
+    const indicatorOffset = 8;
+    const indicatorSize = 5;
+    const positionOffset = indicatorOffset * 2 + indicatorSize + 10;
+    const pairOffset = positionOffset;
+    const priceChangeOffset = pairOffset + 22;
+    const shouldDrawPosition = false;
+    const shouldDrawChange = false;
 
-    function initialize(ticker, current, size, shouldDrawIndicators) {
-        BaseMarketView.initialize(ticker, current, size, shouldDrawIndicators);
-    }
 }

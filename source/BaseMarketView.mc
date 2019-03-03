@@ -18,8 +18,11 @@ using Toybox.System as Sys;
 using Toybox.Graphics as Gfx;
 using Toybox.Application as App;
 using Format as Fmt;
+using Offsets;
 
 class BaseMarketView extends Ui.View {
+
+    hidden const justification = Gfx.TEXT_JUSTIFY_CENTER | Gfx.TEXT_JUSTIFY_VCENTER;
 
     hidden var ticker;
     hidden var current;
@@ -66,25 +69,48 @@ class BaseMarketView extends Ui.View {
         }
     }
 
-    // Update the view
     function onUpdate(dc) {
-        // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
-        var text;
-        var justification = Gfx.TEXT_JUSTIFY_CENTER | Gfx.TEXT_JUSTIFY_VCENTER;
 
         dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_BLACK);
         dc.clear();
 
-        dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_BLACK);
-        if (ticker == null) {
-            text = "-:-";
-        } else {
-            text = ticker["pair"];
-        }
-        dc.drawText(dc.getWidth()/2, getPairOffset(), Gfx.FONT_TINY, text, justification);
+        drawPair(dc);
+        drawLastPrice(dc);
+        drawVolume(dc);
+        drawAdditionalData(dc);
 
-        if (ticker != null && shouldDrawChange()) {
+        if (Offsets.shouldDrawChange) {
+            drawPriceChange(dc);
+        }
+        if (Offsets.shouldDrawPosition) {
+            drawPosition(dc);
+        }
+        if (shouldDrawIndicators) {
+            drawIndicators(dc);
+        }
+
+    }
+
+    // Called when this View is removed from the screen. Save the
+    // state of this View here. This includes freeing resources from
+    // memory.
+    function onHide() {
+    }
+
+    function formatText(args) {
+        return Lang.format("$1$ $2$", args);
+    }
+
+    function drawPair(dc) {
+        var text = (ticker == null) ? "-:-" : ticker["pair"];
+        dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_BLACK);
+        dc.drawText(dc.getWidth() / 2, Offsets.pairOffset, Gfx.FONT_TINY, text, justification);
+    }
+
+    function drawPriceChange(dc) {
+        var text;
+        if (ticker != null) {
             var priceChange = ticker["priceChange"];
             if (priceChange.find("-") == null && priceChange.toFloat() > 0) {
                 priceChange = Lang.format("+$1$", [priceChange]);
@@ -101,30 +127,31 @@ class BaseMarketView extends Ui.View {
                 changePercentage = Lang.format("$1$%", [changePercentage]);
             }
             text = Lang.format("$1$ ($2$)", [priceChange, changePercentage]);
-            dc.drawText(dc.getWidth()/2, getPriceChangeOffset(), Gfx.FONT_TINY, text, justification);
-        } else if (shouldDrawChange()) {
+            dc.drawText(dc.getWidth() / 2, Offsets.priceChangeOffset, Gfx.FONT_TINY, text, justification);
+        } else {
             dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_BLACK);
             text = "-:-";
-            dc.drawText(dc.getWidth()/2, getPriceChangeOffset(), Gfx.FONT_TINY, text, justification);
+            dc.drawText(dc.getWidth() / 2, Offsets.priceChangeOffset, Gfx.FONT_TINY, text, justification);
         }
+    }
 
+    function drawLastPrice(dc) {
+        var text = (ticker == null) ?
+            formatText([priceLabel, "--"]) :
+            formatText([priceLabel, Fmt.formatPrice(ticker["last"], ticker["pair"])]);
         dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_BLACK);
-        if (ticker == null) {
-            text = formatText([priceLabel, "--"]);
-        } else {
-            text = formatText([priceLabel, Fmt.formatPrice(ticker["last"], ticker["pair"])]);
-        }
-        dc.drawText(dc.getWidth()/2, dc.getHeight()/2 - getLastOffset(), Gfx.FONT_MEDIUM, text, justification);
+        dc.drawText(dc.getWidth() / 2, dc.getHeight() / 2 - Offsets.lastOffset, Gfx.FONT_MEDIUM, text, justification);
+    }
 
+    function drawVolume(dc) {
+        var text = (ticker == null) ? formatText([volumeLabel, "--"]) : formatText([volumeLabel, ticker["volume"]]);
         dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_BLACK);
-        if (ticker == null) {
-            text = formatText([volumeLabel, "--"]);
-        } else {
-            text = formatText([volumeLabel, ticker["volume"]]);
-        }
-        dc.drawText(dc.getWidth()/2, dc.getHeight()/2, Gfx.FONT_TINY, text, justification);
+        dc.drawText(dc.getWidth() / 2, dc.getHeight() / 2, Gfx.FONT_TINY, text, justification);
+    }
 
+    function drawAdditionalData(dc) {
         dc.setColor(Gfx.COLOR_RED, Gfx.COLOR_BLACK);
+        var text;
         if (ticker == null) {
             text = formatText([askLabel, "--"]);
         } else {
@@ -136,7 +163,7 @@ class BaseMarketView extends Ui.View {
             }
             text = formatText([askLabel, Fmt.formatPrice(data, ticker["pair"])]);
         }
-        dc.drawText(dc.getWidth()/2, dc.getHeight()/2 + getAskOffset(), Gfx.FONT_TINY, text, justification);
+        dc.drawText(dc.getWidth() / 2, dc.getHeight() / 2 + Offsets.askOffset, Gfx.FONT_TINY, text, justification);
 
         dc.setColor(Gfx.COLOR_GREEN, Gfx.COLOR_BLACK);
         if (ticker == null) {
@@ -150,83 +177,47 @@ class BaseMarketView extends Ui.View {
             }
             text = formatText([bidLabel, Fmt.formatPrice(data, ticker["pair"])]);
         }
-        dc.drawText(dc.getWidth()/2, dc.getHeight()/2 + getBidOffset(), Gfx.FONT_TINY, text , justification);
+        dc.drawText(dc.getWidth() / 2, dc.getHeight() / 2 + Offsets.bidOffset, Gfx.FONT_TINY, text , justification);
+    }
 
-        if (shouldDrawPosition()) {
-            dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_BLACK);
-            if (current == null || size == null) {
-                dc.drawText(dc.getWidth()/2, dc.getHeight() - getPositionOffset(), Gfx.FONT_XTINY, "-/-", justification);
-            } else {
-                dc.drawText(dc.getWidth()/2, dc.getHeight() - getPositionOffset(), Gfx.FONT_XTINY, current + "/" + size, justification);
-            }
-        }
-
-        if (shouldDrawIndicators) {
-            dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_BLACK);
-           var bottomY = dc.getHeight() - getIndicatorOffset() - getIndicatorSize();
-           dc.fillPolygon([
-                [dc.getWidth()/2, dc.getHeight() - getIndicatorOffset()],
-                [dc.getWidth()/2 - getIndicatorSize(), bottomY],
-                [dc.getWidth()/2 + 5, bottomY]
-           ]);
-
-           var topY = getIndicatorOffset() + getIndicatorSize();
-           dc.fillPolygon([
-                [dc.getWidth()/2, getIndicatorOffset()],
-                [dc.getWidth()/2 - getIndicatorSize(), topY],
-                [dc.getWidth()/2 + 5, topY]
-           ]);
+    function drawPosition(dc) {
+        dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_BLACK);
+        if (current == null || size == null) {
+            dc.drawText(
+                dc.getWidth() / 2,
+                dc.getHeight() - Offsets.positionOffset,
+                Gfx.FONT_XTINY,
+                "-/-",
+                justification
+            );
+        } else {
+            dc.drawText(
+                dc.getWidth() / 2,
+                dc.getHeight() - Offsets.positionOffset,
+                Gfx.FONT_XTINY,
+                current + "/" + size,
+                justification
+            );
         }
     }
 
-    function formatText(args) {
-        return Lang.format("$1$ $2$", args);
-    }
+    function drawIndicators(dc) {
+        dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_BLACK);
+        var centerX = dc.getWidth() / 2;
+        var bottomY = dc.getHeight() - Offsets.indicatorOffset - Offsets.indicatorSize;
 
-    // Called when this View is removed from the screen. Save the
-    // state of this View here. This includes freeing resources from
-    // memory.
-    function onHide() {
-    }
+        dc.fillPolygon([
+             [centerX, dc.getHeight() - Offsets.indicatorOffset],
+             [centerX - Offsets.indicatorSize, bottomY],
+             [centerX + 5, bottomY]
+        ]);
 
-    function getPairOffset() {
-        return getIndicatorOffset() * 2 + getIndicatorSize() + 10;
-    }
-
-    function getLastOffset() {
-        return 25;
-    }
-
-    function getAskOffset() {
-        return 25;
-    }
-
-    function getBidOffset() {
-        return 45;
-    }
-
-    function getPositionOffset() {
-        return getIndicatorOffset() * 2 + getIndicatorSize() + 10;
-    }
-
-    function getIndicatorOffset() {
-        return 8;
-    }
-
-    function getIndicatorSize() {
-        return 5;
-    }
-
-    function getPriceChangeOffset() {
-        return getPairOffset() + 30;
-    }
-
-    function shouldDrawPosition() {
-        return true;
-    }
-
-    function shouldDrawChange() {
-        return true;
+        var topY = Offsets.indicatorOffset + Offsets.indicatorSize;
+        dc.fillPolygon([
+             [centerX, Offsets.indicatorOffset],
+             [centerX - Offsets.indicatorSize, topY],
+             [centerX + 5, topY]
+        ]);
     }
 }
 
