@@ -51,6 +51,13 @@ module Format {
         if (amount instanceof Toybox.Lang.String) {
             amount = amount.toFloat();
         }
-        return amount.format(formats[pair]);
+
+        var precision = formats[pair];
+
+        if (precision == null) {
+            return amount.format("%.02f");
+        } else {
+            return amount.format(precision);
+        }
     }
 }

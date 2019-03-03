@@ -72,4 +72,22 @@ module FormatTests {
         Test.assertEqual(actual, "1.0000");
         return true;
     }
+
+    (:test)
+    function formatUnknowCurrencyPrice(logger) {
+        var actual = Format.formatPrice(1.0000, "B2G:GBP");
+        logger.debug("Actual:" + actual);
+
+        Test.assertEqual(actual, "1.00");
+        return true;
+    }
+
+    (:test)
+    function formatUnknowCurrencyPriceString(logger) {
+        var actual = Format.formatPrice("1.0000", "B2G:GBP");
+        logger.debug("Actual:" + actual);
+
+        Test.assertEqual(actual, "1.00");
+        return true;
+    }
 }
