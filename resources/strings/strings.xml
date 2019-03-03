@@ -14,6 +14,6 @@
 	<string id="AskBidHighLow">Additional data</string>
 	<string id="AskBid">Ask/Bid</string>
 	<string id="HighLow">High/Low</string>
-	<string id="Low">Low</string>
-	<string id="High">High</string>
+	<string id="Low">Low:</string>
+	<string id="High">High:</string>
 </strings>
