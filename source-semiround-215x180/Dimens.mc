@@ -13,18 +13,15 @@
  *   limitations under the License.
  */
 
-(:all)
-module Offsets {
-
-    const lastOffset = 25;
-    const askOffset = 25;
-    const bidOffset = 45;
+module Dimens {
+    const lastOffset = 22;
+    const askOffset = 20;
+    const bidOffset = 38;
     const indicatorOffset = 8;
     const indicatorSize = 5;
     const positionOffset = indicatorOffset * 2 + indicatorSize + 10;
     const pairOffset = positionOffset;
-    const priceChangeOffset = pairOffset + 30;
+    const priceChangeOffset = pairOffset + 18;
     const shouldDrawPosition = true;
     const shouldDrawChange = true;
-
 }
