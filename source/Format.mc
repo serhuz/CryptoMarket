@@ -25,6 +25,8 @@ module Format {
         "XRP:USD" => "%.04f",
         "XLM:USD" => "%.04f",
         "ZEC:USD" => "%.02f",
+        "MHC:USD" => "%.04f",
+        "OMG:USD" => "%.04f",
         "GUSD:USD" => "%.04f",
         "BTC:EUR" => "%.01f",
         "ETH:EUR" => "%.02f",
@@ -35,6 +37,8 @@ module Format {
         "XRP:EUR" => "%.04f",
         "XLM:EUR" => "%.04f",
         "ZEC:EUR" => "%.02f",
+        "MHC:EUR" => "%.04f",
+        "OMG:EUR" => "%.04f",
         "GUSD:EUR" => "%.04f",
         "ETH:BTC" => "%.06f",
         "BCH:BTC" => "%.06f",
@@ -44,7 +48,8 @@ module Format {
         "XRP:BTC" => "%.06f",
         "XLM:BTC" => "%.08f",
         "ZEC:BTC" => "%.06f",
-        "QASH:BTC" => "%.06f"
+        "MHC:BTC" => "%.08f",
+        "OMG:BTC" => "%.07f"
     };
 
     function formatPrice(amount, pair) {
