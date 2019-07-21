@@ -27,6 +27,8 @@ module Format {
         "ZEC:USD" => "%.02f",
         "MHC:USD" => "%.04f",
         "OMG:USD" => "%.04f",
+        "TRX:USD" => "%.04f",
+        "BTT:USD" => "%.06f",
         "GUSD:USD" => "%.04f",
         "BTC:EUR" => "%.01f",
         "ETH:EUR" => "%.02f",
@@ -39,6 +41,8 @@ module Format {
         "ZEC:EUR" => "%.02f",
         "MHC:EUR" => "%.04f",
         "OMG:EUR" => "%.04f",
+        "TRX:EUR" => "%.04f",
+        "BTT:EUR" => "%.06f",
         "GUSD:EUR" => "%.04f",
         "ETH:BTC" => "%.06f",
         "BCH:BTC" => "%.06f",
@@ -49,7 +53,9 @@ module Format {
         "XLM:BTC" => "%.08f",
         "ZEC:BTC" => "%.06f",
         "MHC:BTC" => "%.08f",
-        "OMG:BTC" => "%.07f"
+        "TRX:BTC" => "%.08f",
+        "BTT:BTC" => "%.08f",
+        "OMG:BTC" => "%.08f"
     };
 
     function formatPrice(amount, pair) {
