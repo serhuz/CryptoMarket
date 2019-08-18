@@ -55,7 +55,13 @@ module Format {
         "MHC:BTC" => "%.08f",
         "TRX:BTC" => "%.08f",
         "BTT:BTC" => "%.08f",
-        "OMG:BTC" => "%.08f"
+        "OMG:BTC" => "%.08f",
+        "ONT:USD" => "%.04f",
+        "ONG:USD" => "%.04f",
+        "ONT:EUR" => "%.04f",
+        "ONG:EUR" => "%.04f",
+        "ONT:BTC" => "%.08f",
+        "ONG:BTC" => "%.08f"
     };
 
     function formatPrice(amount, pair) {
