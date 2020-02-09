@@ -3,7 +3,7 @@ version: 2.1
 executors:
   ciq:
     docker:
-    - image: serhuz/ciq:3.1.6-1
+    - image: serhuz/ciq:3.1.7-1
     working_directory: ~/cryptomarket
     
 jobs:
